@@ -1,0 +1,53 @@
+objects:
+  secret:
+    enabled: false
+  ingress:
+    enabled: true
+
+metadata:
+  annotations: {}
+  labels: {}
+
+imagePullSecrets: {}
+
+volumes: {}
+
+container: {}
+
+readinessProbe:
+  tcpSocket:
+    port: 5000
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  failureThreshold: 8
+
+livenessProbe:
+  tcpSocket:
+    port: 5000
+  initialDelaySeconds: 120
+  timeoutSeconds: 1
+
+port: 5000
+
+service:
+  annotations:
+  spec:
+    type: ClusterIP
+    ports:
+    - port: 5000
+      targetPort: 5000
+
+image:
+  repository: robertsilvatech/sample-python-application
+  imagePullPolicy: Always
+  tag: dev-6c8e7c59
+
+spec:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 400Mi
+    limits:
+      cpu: 1
+      memory: 1Gi

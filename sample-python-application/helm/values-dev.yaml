@@ -1,0 +1,18 @@
+image:
+  tag: dev-1b79bbc2
+
+env:
+  COLOR: YELLOW
+
+ingress:
+  annotations:
+    rewrite_target:
+      enabled: false
+      value: /
+    app_root:
+      enabled: false
+      value:
+  rules:
+  - host: sample-python-application-dev
+    domain: robertsilvatech.local
+    path: /

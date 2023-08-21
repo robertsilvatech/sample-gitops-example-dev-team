@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+  {{- with .Values.metadata.labels }}
+    {{- toYaml .Values.metadata.labels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.metadata.annotations }}
+  annotations:
+    {{- toYaml .Values.metadata.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.spec.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:      
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      nodeSelector: 
+      {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- if .Values.volumes }}
+      volumes: 
+      {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image.repository}}:{{ .Values.image.tag}}
+        imagePullPolicy: {{ .Values.image.pullPolicy }} 
+        {{- if .Values.container.volumeMounts }}
+        volumeMounts:
+        {{- toYaml .Values.container.volumeMounts | nindent 10 }}
+        {{- end }}
+        {{- if .Values.container.args }}
+        args:
+        {{- toYaml .Values.container.args | nindent 10 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.port }}
+          protocol: TCP
+        {{- if .Values.spec.resources }}
+        resources:
+        {{- toYaml .Values.spec.resources | nindent 10 }}
+        {{- end }}
+        {{- if .Values.spec.readinessProbe }}
+        readinessProbe:
+        {{- toYaml .Values.spec.readinessProbe | nindent 10}}
+        {{- end }}
+        {{- if .Values.spec.livenessProbe }}
+        livenessProbe:
+        {{- toYaml .Values.spec.livenessProbe | nindent 10}}
+        {{- end }}
+        {{- include "chart.env" . | indent 8 }}

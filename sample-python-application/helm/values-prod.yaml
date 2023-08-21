@@ -1,0 +1,18 @@
+image:
+  tag: prod-759ac3b9
+
+env:
+  COLOR: RED
+
+ingress:
+  annotations:
+    rewrite_target:
+      enabled: false
+      value: /
+    app_root:
+      enabled: false
+      value:
+  rules:
+  - host: sample-python-application-prod
+    domain: robertsilvatech.local
+    path: /

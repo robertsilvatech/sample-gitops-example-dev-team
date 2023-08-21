@@ -1,0 +1,11 @@
+apiVersion: v2
+name: generic-helm
+description: A simple helm chart for using Zabbix on Kubernetes or Openshift
+version: 0.0.1
+keywords:
+  - generic-helm
+  - jlcp
+maintainers:
+  - name: Robert Silva
+    email: robert.silva@jlcp.com.br
+    
