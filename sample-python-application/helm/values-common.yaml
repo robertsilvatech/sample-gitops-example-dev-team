@@ -30,7 +30,7 @@ livenessProbe:
 port: 5000
 
 service:
-  annotations:
+  annotations: {}
   spec:
     type: ClusterIP
     ports:
